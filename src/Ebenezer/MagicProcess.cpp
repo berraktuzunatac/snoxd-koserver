@@ -185,7 +185,7 @@ bool CMagicProcess::GrantType4Buff(_MAGIC_TABLE * pSkill, _MAGIC_TYPE4 *pType, U
 	// Buff mustn't already be added at this point.
 	FastGuard lock(pTarget->m_buffLock);
 	if (!bIsRecastingSavedMagic
-		&& pTarget->m_buffMap.find(pType->bBuffType) != pTarget->m_buffMap.end())
+		&& pTarget->m_buffMap.find(pType->bBuffType) != pTarget->m_buffMap.end() && pType->bIsBuff)
 		return false;
 
 	switch (pType->bBuffType)

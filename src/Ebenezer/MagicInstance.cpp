@@ -1125,7 +1125,7 @@ bool MagicInstance::ExecuteType4()
 
 		
 		// If the user already has this buff
-		if (bFoundBuff 
+		if ((bFoundBuff && pType->bIsBuff)
 			// or it's a curse (debuff), and we're blocking them 
 			|| (!pType->bIsBuff && pTUser->m_bBlockCurse)
 			// or we couldn't grant the (de)buff...
