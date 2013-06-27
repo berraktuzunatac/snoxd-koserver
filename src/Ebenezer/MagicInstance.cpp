@@ -1103,30 +1103,38 @@ bool MagicInstance::ExecuteType4()
 
 	foreach (itr, casted_member)
 	{
+		// If this skill is a debuff, and the caster is in the crossfire, 
+		// we should not bother debuffing them.
+		if (!pType->bIsBuff
+			&& *itr == pSkillCaster)
+			continue;
+		if((*itr)->m_bCurseReflect && !pType->bIsBuff)
+		{
+			if(pSkillCaster->m_bCurseReflect)         //if both user has reflection,then,continue
+				continue;
+		(*itr) = g_pMain->GetUserPtr(sCasterID);           //Here is Reflection
+		}
 		uint8 bResult = 1;
 		CUser* pTUser = *itr;
 		_BUFF_TYPE4_INFO pBuffInfo;
-
+			
 		pTUser->m_buffLock.Acquire();
 		Type4BuffMap::iterator buffItr = pTUser->m_buffMap.find(pType->bBuffType);
 		bool bFoundBuff = (buffItr != pTUser->m_buffMap.end());
 		pTUser->m_buffLock.Release();
 
-		// If this skill is a debuff, and the caster is in the crossfire, 
-		// we should not bother debuffing them.
-		if (!pType->bIsBuff
-			&& pTUser == pSkillCaster)
-			continue;
-		if(!pType->bIsBuff && pTUser->m_bBlockCurse)
-		{
-			bResult=0;
-			goto fail_return;
-		}
+		
+		// If the user already has this buff
 		if (bFoundBuff 
+			// or it's a curse (debuff), and we're blocking them 
+			|| (!pType->bIsBuff && pTUser->m_bBlockCurse)
+			// or we couldn't grant the (de)buff...
 			|| !CMagicProcess::GrantType4Buff(pSkill, pType, pSkillCaster, pTUser, bIsRecastingSavedMagic))
 		{
-			// Only error out if we cannot grant a targeted buff.
-			if (pType->bIsBuff && sTargetID != -1)
+			// We should only error out if we cannot grant a targeted buff
+			// or, if the *targeted* user is blocking curses (debuffs).
+			if (sTargetID != -1
+				&& (pType->bIsBuff || (!pType->bIsBuff && pTUser->m_bBlockCurse)))
 			{
 				bResult = 0;
 				goto fail_return;
@@ -1137,7 +1145,7 @@ bool MagicInstance::ExecuteType4()
 			// not be reset on fail.
 			continue;
 		}
-
+	
 		if (nSkillID > 500000 && pTUser->isPlayer())
 			pTUser->InsertSavedMagic(nSkillID, pType->sDuration);
 
@@ -1187,7 +1195,7 @@ bool MagicInstance::ExecuteType4()
 				pTUser->SendUserStatusUpdate(status, USER_STATUS_INFLICT);
 			}
 		}
-		
+
 		if (bResult == 0
 			&& pSkillCaster->isPlayer())
 			SendSkillFailed((*itr)->GetID());
