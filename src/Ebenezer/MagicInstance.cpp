@@ -1122,9 +1122,7 @@ bool MagicInstance::ExecuteType4()
 		Type4BuffMap::iterator buffItr = pTUser->m_buffMap.find(pType->bBuffType);
 		bool bFoundBuff = (buffItr != pTUser->m_buffMap.end());
 		pTUser->m_buffLock.Release();
-		if(!pType->bIsBuff && bFoundBuff) {
-        CMagicProcess::RemoveType4Buff(pType->bBuffType,pTUser);  //if user has debuff,we are deleting here it and recreating at below
-		  }
+		
 		// If the user already has this buff
 		if ((bFoundBuff && pType->bIsBuff)
 			// or it's a curse (debuff), and we're blocking them 
@@ -1146,7 +1144,9 @@ bool MagicInstance::ExecuteType4()
 			// not be reset on fail.
 			continue;
 		}
-	
+	if(!pType->bIsBuff && bFoundBuff) {
+        CMagicProcess::RemoveType4Buff(pType->bBuffType,pTUser);  //if user has debuff,we are deleting here it and recreating at below
+		  }
 		if (nSkillID > 500000 && pTUser->isPlayer())
 			pTUser->InsertSavedMagic(nSkillID, pType->sDuration);
 
