@@ -1068,6 +1068,9 @@ void CUser::SetSlotItemValue()
 		if (!bonusMap.empty())
 			m_equippedItemBonuses[i] = bonusMap;
 	}
+	//Set If User has eskrima
+	m_sDaggerR+=(m_bEskrimaPct-100)*m_sDaggerR/100;
+	m_sBowR+=(m_bEskrimaPct-100)*m_sBowR/100;
 
 	if (m_sItemHit < 3)
 		m_sItemHit = 3;
@@ -2508,6 +2511,7 @@ void CUser::InitType4()
 	m_bExpGainAmount = 100;
 	m_bNPGainAmount = 100;
 	m_bNoahGainAmount = 100;
+	m_bEskrimaPct=100;
 }
 
 void CUser::Type4Duration()

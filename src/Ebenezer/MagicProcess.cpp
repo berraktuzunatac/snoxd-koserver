@@ -422,8 +422,8 @@ bool CMagicProcess::GrantType4Buff(_MAGIC_TABLE * pSkill, _MAGIC_TYPE4 *pType, U
 
 	case BUFF_TYPE_DAGGER_BOW_DEFENSE: // Eskrima
 		// Inflicts attacks as well as a bleeding curse on the enemy. Decreases 10% Dagger and Bow Defense of the enemy under the bleeding curse buff.
-		pTarget->m_sDaggerR=(pTarget->m_sDaggerR*9/10);
-		pTarget->m_sBowR=(pTarget->m_sBowR*9/10);
+	if (pTarget->isPlayer())
+			TO_USER(pTarget)->m_bEskrimaPct = pType->bExpPct;
 		break;
 
 	case BUFF_TYPE_LOYALTY_AMOUNT:		// Santa's Present (gives an extra +2NP per kill, unlike BUFF_TYPE_LOYALTY which uses an percent).
@@ -694,8 +694,8 @@ bool CMagicProcess::RemoveType4Buff(uint8 byBuffType, Unit *pTarget)
 
 	case BUFF_TYPE_DAGGER_BOW_DEFENSE: // Eskrima
 		// Inflicts attacks as well as a bleeding curse on the enemy. Decreases 10% Dagger and Bow Defense of the enemy under the bleeding curse buff.
-		pTarget->m_sDaggerR=(pTarget->m_sDaggerR*10/9);
-		pTarget->m_sBowR=(pTarget->m_sBowR*10/9);
+	if (pTarget->isPlayer())
+			TO_USER(pTarget)->m_bEskrimaPct = 100;
 		break;
 
 	case BUFF_TYPE_LOYALTY_AMOUNT:		// Santa's Present (gives an extra +2NP per kill, unlike BUFF_TYPE_LOYALTY which uses an percent).

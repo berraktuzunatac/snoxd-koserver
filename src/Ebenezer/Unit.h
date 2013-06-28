@@ -251,5 +251,6 @@ public:
 	bool	m_bInstantCast;
 	bool    m_bBlockCurse;
 	bool    m_bCurseReflect;
+	uint8   m_bEskrimaPct;
 	uint8	m_bReflectArmorType;
 };
