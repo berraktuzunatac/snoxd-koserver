@@ -1122,9 +1122,21 @@ bool MagicInstance::ExecuteType4()
 		Type4BuffMap::iterator buffItr = pTUser->m_buffMap.find(pType->bBuffType);
 		bool bFoundBuff = (buffItr != pTUser->m_buffMap.end());
 		pTUser->m_buffLock.Release();
+<<<<<<< HEAD
 		
 		// If the user already has this buff
 		if ((bFoundBuff && pType->bIsBuff)
+=======
+
+		// If this skill is a debuff, and the caster is in the crossfire, 
+		// we should not bother debuffing them.
+		if (!pType->bIsBuff
+			&& pTUser == pSkillCaster)
+			continue;
+
+		// If the user already has this buff
+		if (bFoundBuff 
+>>>>>>> 3892a3097e277b7dcff35ad48742c5c01890f601
 			// or it's a curse (debuff), and we're blocking them 
 			|| (!pType->bIsBuff && pTUser->m_bBlockCurse)
 			// or we couldn't grant the (de)buff...

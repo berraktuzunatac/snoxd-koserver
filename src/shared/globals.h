@@ -143,12 +143,37 @@ enum NpcType
 	NPC_GATE2				= 150, // Doda camp gate
 	NPC_ADELIA				= 153, // Goddess Adelia[event]
 	NPC_CHAOTIC_GENERATOR2	= 162, // newer type used by the Chaotic Generator
+	NPC_SCARECROW			= 171, // official scarecrow byType
 	NPC_KARUS_WARDER1		= 190,
 	NPC_KARUS_WARDER2		= 191,
 	NPC_ELMORAD_WARDER1		= 192,
 	NPC_ELMORAD_WARDER2		= 193,
 	NPC_KARUS_GATEKEEPER	= 198,
 	NPC_ELMORAD_GATEKEEPER	= 199
+};
+
+enum ZoneAbilityType
+{
+	// these control neutrality-related settings client-side, 
+	// including whether collision is enabled for other players.
+	ZoneAbilityNeutral			= 0, // Players cannot attack each other, or NPCs. Can walk through players.
+	ZoneAbilityPVP				= 1, // Players can attack each other, and only NPCs from the opposite nation. Cannot walk through players.
+	ZoneAbilitySpectator		= 2, // player is spectating a 1v1 match (ZoneAbilityPVP is sent for the attacker)
+	ZoneAbilitySiege1			= 3, // siege state 1 (unknown)
+	ZoneAbilitySiege2			= 4, // siege state 2/4: if they have 0 NP & this is set, it will not show the message telling them to buy more.
+	ZoneAbilitySiege3			= 5, // siege state 3 (unknown)
+	ZoneAbilitySiegeDisabled	= 6, // CSW not running
+	ZoneAbilityCaitharosArena	= 7, // Players can attack each other (don't seem to be able to anymore?), but not NPCs. Can walk through players.
+	ZoneAbilityPVPNeutralNPCs	= 8  // Players can attack each other, but not NPCs. Cannot walk through players.
+};
+
+enum ZoneFlags
+{
+	TRADE_OTHER_NATION	= 1,
+	TALK_OTHER_NATION	= 2,
+	ATTACK_OTHER_NATION	= 4,
+	ATTACK_SAME_NATION	= 8,
+	FRIENDLY_NPCS		= 16
 };
 
 // ITEM_SLOT DEFINE
